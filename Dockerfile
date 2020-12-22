@@ -8,3 +8,12 @@ RUN kibana-plugin install "https://github.com/dlumbrer/kibiter-menu-plugin/relea
 
 COPY ./hack/template.js src/core/server/rendering/views/.
 COPY ./favicons/* src/core/server/core_app/assets/favicons/
+
+USER root
+
+COPY ./docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+
+USER 1000
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
