@@ -12,6 +12,7 @@ RUN kibana-plugin install "https://github.com/dlumbrer/kbn_radar/releases/downlo
 RUN kibana-plugin install "https://github.com/dlumbrer/kbn_network/releases/download/7.10.0-1/kbn_network-7.10.0.zip"
 RUN kibana-plugin install "https://github.com/dlumbrer/kbn_dotplot/releases/download/7.10.0-1/kbn_dotplot-7.10.0.zip"
 RUN kibana-plugin install "https://github.com/dlumbrer/kbn_polar/releases/download/7.10.0-1/kbn_polar-7.10.0.zip"
+RUN kibana-plugin install "https://github.com/fbaligand/kibana-enhanced-table/releases/download/v1.10.1/enhanced-table-1.10.1_7.10.0.zip"
 
 COPY ./hack/template.js src/core/server/rendering/views/.
 COPY ./favicons/* src/core/server/core_app/assets/favicons/
