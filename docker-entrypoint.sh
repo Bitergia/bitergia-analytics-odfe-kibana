@@ -103,7 +103,7 @@ fi
 if [ "$LOGIN_BRANDIMAGE" != "" ]; then
     printf "opendistro_security.basicauth.login.brandimage: \"$LOGIN_BRANDIMAGE\"\n" >> /opt/kibana/config/kibana.yml
 else
-    printf "opendistro_security.basicauth.login.brandimage: 'https://raw.githubusercontent.com/chaoss/grimoirelab-kibiter/integration-6.8.6/docker/assets/bitergia_login_logo.png'\n" >> /opt/kibana/config/kibana.yml
+    printf "opendistro_security.basicauth.login.brandimage: 'https://raw.githubusercontent.com/Bitergia/bitergia-analytics-odfe-kibana/master/assets/bitergia_login_logo.png'\n" >> /opt/kibana/config/kibana.yml
 fi
 
 if [ "$LOGIN_TITLE" != "" ]; then
