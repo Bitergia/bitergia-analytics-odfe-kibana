@@ -96,27 +96,41 @@ if [ -z "$ELASTICSEARCH_USER" ] || [ -z "$ELASTICSEARCH_PASSWORD" ]; then
     exit 1
 fi
 
+# For the sed command, we don't use directly the '-i' option because it moves (mv)
+# the output file under the hood. That might generate problems when kibana.yml
+# is mounted in a volume.
+
+# Generate the temporary file for changing kibana.yml.
+TMPFILE=$(mktemp)
+
 if [ "$ANONYMOUS_USER" != "" ]; then
-    printf "opendistro_security.auth.anonymous_auth_enabled: \"$ANONYMOUS_USER\"\n" >> cd /usr/share/kibana/config/kibana.yml
+    sed '/opendistro_security.auth.anonymous_auth_enabled/d' /opt/kibana/config/kibana.yml > $TMPFILE && cat $TMPFILE > /opt/kibana/config/kibana.yml
+    printf "opendistro_security.auth.anonymous_auth_enabled: \"$ANONYMOUS_USER\"\n" >> /opt/kibana/config/kibana.yml
 fi
 
+sed '/opendistro_security.basicauth.login.brandimage/d' /opt/kibana/config/kibana.yml > $TMPFILE && cat $TMPFILE > /opt/kibana/config/kibana.yml
 if [ "$LOGIN_BRANDIMAGE" != "" ]; then
     printf "opendistro_security.basicauth.login.brandimage: \"$LOGIN_BRANDIMAGE\"\n" >> /opt/kibana/config/kibana.yml
 else
     printf "opendistro_security.basicauth.login.brandimage: 'https://raw.githubusercontent.com/Bitergia/bitergia-analytics-odfe-kibana/master/assets/bitergia_login_logo.png'\n" >> /opt/kibana/config/kibana.yml
 fi
 
+sed '/opendistro_security.basicauth.login.title/d' /opt/kibana/config/kibana.yml > $TMPFILE && cat $TMPFILE > /opt/kibana/config/kibana.yml
 if [ "$LOGIN_TITLE" != "" ]; then
     printf "opendistro_security.basicauth.login.title: \"$LOGIN_TITLE\"\n" >> /opt/kibana/config/kibana.yml
 else
     printf "opendistro_security.basicauth.login.title: Please login to Bitergia Analytics Dashboard\n" >> /opt/kibana/config/kibana.yml
 fi
 
+sed '/opendistro_security.basicauth.login.subtitle/d' /opt/kibana/config/kibana.yml > $TMPFILE && cat $TMPFILE > /opt/kibana/config/kibana.yml
 if [ "$LOGIN_SUBTITLE" != "" ]; then
     printf "opendistro_security.basicauth.login.subtitle: \"$LOGIN_SUBTITLE\"\n" >> /opt/kibana/config/kibana.yml
 else
     printf 'opendistro_security.basicauth.login.subtitle: If you have forgotten your username or password, please contact the Bitergia staff\n' >> /opt/kibana/config/kibana.yml
 fi
+
+# Removing the temporary file
+rm $TMPFILE
 
 # Execute kibana
 /usr/local/bin/kibana-docker
