@@ -90,6 +90,18 @@ else
     fi
 fi
 
+if [ "$OPENDISTRO_TRACEANALYTICS" != "" ]; then
+    # If not installed, install
+    if [[ $CURRENT_PLUGINS != *"opendistroTraceAnalyticsKibana"* ]]; then
+        kibana-plugin install https://d3g5vo6xdbdb9a.cloudfront.net/downloads/kibana-plugins/opendistro-trace-analytics/opendistroTraceAnalyticsKibana-1.12.0.0.zip
+    fi
+else
+    # If installed, uninstall
+    if [[ $CURRENT_PLUGINS == *"opendistroTraceAnalyticsKibana"* ]]; then
+        kibana-plugin remove opendistroTraceAnalyticsKibana
+    fi
+fi
+
 if [ -z "$ELASTICSEARCH_USER" ] || [ -z "$ELASTICSEARCH_PASSWORD" ]; then
     echo >&2 'error: ELASTICSEARCH_USER or/and ELASTICSEARCH_PASSWORD environment variables were not configured'
     echo >&2 '  these two docker environment variables must be configured before running the container'
