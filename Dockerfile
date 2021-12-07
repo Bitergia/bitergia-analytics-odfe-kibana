@@ -5,7 +5,7 @@ WORKDIR /usr/share/kibana
 ENV PATH=/usr/share/kibana/bin:$PATH
 
 # Install Bitergia Analytics plugins
-RUN kibana-plugin install "https://github.com/Bitergia/bitergia-analytics-plugin/releases/download/0.0.1_7.10.0/bitergiaAnalytics-7.10.0.zip"
+RUN kibana-plugin install "https://github.com/Bitergia/bitergia-analytics-plugin/releases/download/0.0.2_7.10.0/bitergiaAnalytics-7.10.0.zip"
 
 # Install visualization plugins
 RUN kibana-plugin install "https://github.com/dlumbrer/kbn_radar/releases/download/7.10.0-1/kbn_radar-7.10.0.zip"
